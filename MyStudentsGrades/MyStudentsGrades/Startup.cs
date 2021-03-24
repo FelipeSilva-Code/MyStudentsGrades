@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyStudentsGrades.Models;
+using MyStudentsGrades.Services;
 
 namespace MyStudentsGrades
 {
@@ -30,6 +31,8 @@ namespace MyStudentsGrades
             services.AddDbContext<MyStudentsGradesContext>(options =>
                    options.UseMySql(Configuration.GetConnectionString("MyStudentsGradesContext"), builder =>
                    builder.MigrationsAssembly("MyStudentsGrades")));
+
+            services.AddScoped<ClassroomService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
