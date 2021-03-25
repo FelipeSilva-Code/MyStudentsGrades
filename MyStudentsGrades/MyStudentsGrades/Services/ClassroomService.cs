@@ -39,8 +39,7 @@ namespace MyStudentsGrades.Services
             if (classroom == null)
                 throw new NotFoundException("Id not found");
 
-            classroom.Activities = await _context.Activity.Where(x => x.ClassroomId == classroom.Id).ToListAsync();
-            classroom.Students = await _context.Student.Where(x => x.ClassroomId == classroom.Id).ToListAsync();
+        
 
             return classroom;
         }
@@ -49,6 +48,20 @@ namespace MyStudentsGrades.Services
         {
             _context.Add(classroom);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveAsync (int id)
+        {
+            try
+            {
+                var classroom = await FindById(id);
+                _context.Classroom.Remove(classroom);
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateException)
+            {
+                throw new IntegrityException("Can't delete classroom because it has students and/or activities");
+            }
         }
     }
 }

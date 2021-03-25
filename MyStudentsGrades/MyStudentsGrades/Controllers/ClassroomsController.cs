@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyStudentsGrades.Services;
 using MyStudentsGrades.Models;
+using MyStudentsGrades.Services.Exceptions;
 
 namespace MyStudentsGrades.Controllers
 {
@@ -51,6 +52,33 @@ namespace MyStudentsGrades.Controllers
                 return View(await _classroomService.FindById(id.Value));
             }
             catch (ApplicationException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+        }
+
+        public async Task<IActionResult> Delete (int? id)
+        {
+            try
+            {
+                return View(await _classroomService.FindById(id.Value));
+            }
+            catch(ApplicationException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete (int id)
+        {
+            try
+            {
+                await _classroomService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (IntegrityException e)
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message });
             }
