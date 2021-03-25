@@ -21,6 +21,8 @@ namespace MyStudentsGrades.Models
 
         [Display(Name = "Required Media")]
         public double RequiredMedia { get; set; }
+        public ICollection<Student> Students { get; set; } = new List<Student>();
+        public ICollection<Activity> Activities { get; set; } = new List<Activity>();
 
         public Classroom ()
         { 
@@ -33,14 +35,7 @@ namespace MyStudentsGrades.Models
             ClassroomName = classroomName;
             RequiredMedia = requiredMedia;
         }
-
-       /*
-        public double CountOfStudents ()
-        {
-            var students = Students.Where(x => x.ClassroomId == id).ToList();
-            return students.Count();
-        }
-       */
+  
 
     }
 }

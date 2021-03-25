@@ -17,8 +17,14 @@ namespace MyStudentsGrades.Services
 
         public async Task<IEnumerable<Classroom>> FindAllAsync ()
         {
-            var clasrooms = await _context.Classroom.ToListAsync();
-            return clasrooms;
+            var classrooms = await _context.Classroom.ToListAsync();
+
+            foreach (var item in classrooms)
+            {
+                item.Activities = await _context.Activity.Where(x => x.ClassroomId == item.Id).ToListAsync();
+                item.Students = await _context.Student.Where(x => x.ClassroomId == item.Id).ToListAsync();
+            }
+            return classrooms;
         }
     }
 }

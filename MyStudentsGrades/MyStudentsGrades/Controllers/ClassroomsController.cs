@@ -19,7 +19,8 @@ namespace MyStudentsGrades.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _classroomService.FindAllAsync());
+            var classrooms = await _classroomService.FindAllAsync();
+            return View(classrooms);
         }
     }
 }

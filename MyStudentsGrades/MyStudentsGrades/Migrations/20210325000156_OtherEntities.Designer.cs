@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyStudentsGrades.Models;
 
 namespace MyStudentsGrades.Migrations
 {
     [DbContext(typeof(MyStudentsGradesContext))]
-    partial class MyStudentsGradesContextModelSnapshot : ModelSnapshot
+    [Migration("20210325000156_OtherEntities")]
+    partial class OtherEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,7 +25,7 @@ namespace MyStudentsGrades.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ClassroomId")
+                    b.Property<int?>("ClassroomId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -68,7 +70,7 @@ namespace MyStudentsGrades.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ActivityId")
+                    b.Property<int?>("ActivityId")
                         .HasColumnType("int");
 
                     b.Property<string>("Observation")
@@ -77,7 +79,7 @@ namespace MyStudentsGrades.Migrations
                     b.Property<double>("StudentGrade")
                         .HasColumnType("double");
 
-                    b.Property<int>("StudentId")
+                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -98,7 +100,7 @@ namespace MyStudentsGrades.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("ClassroomId")
+                    b.Property<int?>("ClassroomId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -118,33 +120,25 @@ namespace MyStudentsGrades.Migrations
                 {
                     b.HasOne("MyStudentsGrades.Models.Classroom", "Classroom")
                         .WithMany("Activities")
-                        .HasForeignKey("ClassroomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClassroomId");
                 });
 
             modelBuilder.Entity("MyStudentsGrades.Models.Grade", b =>
                 {
                     b.HasOne("MyStudentsGrades.Models.Activity", "Activity")
                         .WithMany()
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ActivityId");
 
                     b.HasOne("MyStudentsGrades.Models.Student", "Student")
                         .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentId");
                 });
 
             modelBuilder.Entity("MyStudentsGrades.Models.Student", b =>
                 {
                     b.HasOne("MyStudentsGrades.Models.Classroom", "Classroom")
                         .WithMany("Students")
-                        .HasForeignKey("ClassroomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClassroomId");
                 });
 #pragma warning restore 612, 618
         }

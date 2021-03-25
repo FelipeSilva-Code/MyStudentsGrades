@@ -9,9 +9,9 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table-primary">
             <th>
                 @Html.DisplayNameFor(model => model.NameSchool)
             </th>
@@ -26,6 +26,9 @@
             </th>
             <th>
                 Quantity of Students
+            </th>
+            <th>
+                Quantity of Activities
             </th>
             <th></th>
         </tr>
@@ -46,7 +49,10 @@
                 @Html.DisplayFor(modelItem => item.RequiredMedia)
             </td>
             <td>
-                Quantity of Students
+                @Html.DisplayFor(modelItem => item.Students.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activities.Count)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

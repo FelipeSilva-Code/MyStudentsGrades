@@ -14,6 +14,9 @@ namespace MyStudentsGrades.Models
         }
 
         public DbSet<Classroom> Classroom { get; set; }
+        public DbSet<Activity> Activity { get; set; }
+        public DbSet<Student> Student { get; set; }
+        public DbSet<Grade> Grade { get; set; }
 
     }
 }
