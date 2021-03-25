@@ -1,0 +1,56 @@
+﻿@model MyStudentsGrades.Models.Classroom
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Classroom</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NameSchool" class="control-label"></label>
+                <input asp-for="NameSchool" class="form-control" placeholder="Harvard University" />
+                <span asp-validation-for="NameSchool" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassroomName" class="control-label"></label>
+                <input asp-for="ClassroomName" placeholder="2ºL" class="form-control" />
+                <span asp-validation-for="ClassroomName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SchoolSubject" class="control-label"></label>
+                <input asp-for="SchoolSubject" placeholder="Geography" class="form-control" />
+                <span asp-validation-for="SchoolSubject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequiredMedia" class="control-label"></label>
+                <input asp-for="RequiredMedia" placeholder="5" class="form-control" />
+                <span asp-validation-for="RequiredMedia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit" name="addStudents" value="false">
+                    Just Create
+                </button>
+                Or
+                <button class="btn btn-primary" type="submit" name="addStudents" value="true">
+                    Add Students
+                </button>
+                
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
