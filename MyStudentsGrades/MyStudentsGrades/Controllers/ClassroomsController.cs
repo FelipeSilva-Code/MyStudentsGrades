@@ -49,7 +49,7 @@ namespace MyStudentsGrades.Controllers
         {
             try
             { 
-                return View(await _classroomService.FindById(id.Value));
+                return View(await _classroomService.FindByIdAsync(id.Value));
             }
             catch (ApplicationException e)
             {
@@ -61,7 +61,7 @@ namespace MyStudentsGrades.Controllers
         {
             try
             {
-                return View(await _classroomService.FindById(id.Value));
+                return View(await _classroomService.FindByIdAsync(id.Value));
             }
             catch(ApplicationException e)
             {
@@ -84,6 +84,39 @@ namespace MyStudentsGrades.Controllers
             }
         }
 
+        public async Task<IActionResult> Edit (int? id)
+        {
+            try
+            {
+                return View(await _classroomService.FindByIdAsync(id.Value));
+            }
+            catch(ApplicationException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit (int id, Classroom classroom)
+        {
+            if (!ModelState.IsValid)
+                return View(classroom);
+
+            if (id != classroom.Id)
+                return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
+
+            try
+            {
+                await _classroomService.UpdateAsync(classroom);
+                return RedirectToAction(nameof(Index));
+            }
+            catch(ApplicationException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+        }
+
         public IActionResult Error(string message)
         {
             ErrorViewModel viewModel = new ErrorViewModel()
@@ -93,6 +126,6 @@ namespace MyStudentsGrades.Controllers
             };
 
             return View(viewModel);
-        }
+        } 
     }
 }
