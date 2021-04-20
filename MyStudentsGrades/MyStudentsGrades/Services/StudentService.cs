@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MyStudentsGrades.Models;
 using Microsoft.EntityFrameworkCore;
+using MyStudentsGrades.Services.Exceptions;
 
 namespace MyStudentsGrades.Services
 {
@@ -38,6 +39,22 @@ namespace MyStudentsGrades.Services
                 throw new Exception("Id not found.");
 
             return student;
+        }
+
+        public async Task<int> RemoveAsync (int? id)
+        {
+          
+
+            var student = await FindByIdAsync(id);
+
+            //Necessary because need to back to the page of this classroom
+            int classroomId = student.ClassroomId;
+
+            _context.Remove(student);
+            await _context.SaveChangesAsync();
+
+            return classroomId;
+           
         }
 
 
