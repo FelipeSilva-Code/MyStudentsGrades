@@ -44,5 +44,30 @@ namespace MyStudentsGrades.Controllers
             else
                 return RedirectToAction("CompleteInfo", "Classrooms", new { id = classroomId });
         }
+
+        public async Task<IActionResult> Details (int? id)
+        {
+            try
+            {
+                var student = await _studentService.FindByIdAsync(id.Value);
+                return View(student);
+            }
+            catch(ApplicationException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+         
+        }
+
+        public IActionResult Error(string message)
+        {
+            ErrorViewModel viewModel = new ErrorViewModel()
+            {
+                Message = message,
+                RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
+        }
     }
 }
