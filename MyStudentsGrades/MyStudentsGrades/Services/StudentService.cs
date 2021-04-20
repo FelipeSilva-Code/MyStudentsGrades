@@ -57,6 +57,22 @@ namespace MyStudentsGrades.Services
            
         }
 
+        public async Task UpdateAsync (Student student)
+        {
+            if (!await _context.Student.AnyAsync(x => x.Id == student.Id))
+                throw new NotFoundException("Id not found");
+
+            try
+            {
+                _context.Student.Update(student);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbUpdateConcurrencyException(e.Message);
+            }
+        }
+
 
     }
 }

@@ -153,3 +153,4 @@ C:\Desenvolvimento\MyStudent'sGrades\MyStudentsGrades\MyStudentsGrades\obj\Debug
 C:\Desenvolvimento\MyStudent'sGrades\MyStudentsGrades\MyStudentsGrades\obj\Debug\netcoreapp3.1\Razor\Views\Students\Create.cshtml.g.cs
 C:\Desenvolvimento\MyStudent'sGrades\MyStudentsGrades\MyStudentsGrades\obj\Debug\netcoreapp3.1\Razor\Views\Students\Details.cshtml.g.cs
 C:\Desenvolvimento\MyStudent'sGrades\MyStudentsGrades\MyStudentsGrades\obj\Debug\netcoreapp3.1\Razor\Views\Students\Delete.cshtml.g.cs
+C:\Desenvolvimento\MyStudent'sGrades\MyStudentsGrades\MyStudentsGrades\obj\Debug\netcoreapp3.1\Razor\Views\Students\Edit.cshtml.g.cs

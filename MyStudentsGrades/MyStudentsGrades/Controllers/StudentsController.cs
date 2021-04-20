@@ -87,6 +87,45 @@ namespace MyStudentsGrades.Controllers
             }
         }
 
+
+        public async Task<IActionResult> Edit (int? id)
+        {
+            try
+            {
+                var student = await _studentService.FindByIdAsync(id.Value);
+                return View(student);
+            }
+            catch (ApplicationException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit (int id, Student student)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View();
+
+                if (id != student.Id)
+                    throw new Exception("Id mismatch.");
+
+
+                int classroomId = student.ClassroomId;
+
+                await _studentService.UpdateAsync(student);
+                return RedirectToAction("CompleteInfo", "Classrooms", new { id = classroomId });
+
+            }
+            catch(ApplicationException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+        }
+
         public IActionResult Error(string message)
         {
             ErrorViewModel viewModel = new ErrorViewModel()
