@@ -37,7 +37,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.NameSchool)
+              <a asp-action="CompleteInfo" asp-route-id="@item.Id">  @Html.DisplayFor(modelItem => item.NameSchool) </a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ClassroomName)

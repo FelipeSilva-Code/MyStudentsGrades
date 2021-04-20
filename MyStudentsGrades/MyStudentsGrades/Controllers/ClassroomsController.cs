@@ -39,7 +39,7 @@ namespace MyStudentsGrades.Controllers
             await _classroomService.InsertAsync(classroom);
 
             if (addStudents)
-                return RedirectToAction("Students", nameof(Create));
+                return RedirectToAction("Create", "Students", new { id = classroom.Id });
             else
                 return RedirectToAction(nameof(Index));
 
@@ -115,6 +115,12 @@ namespace MyStudentsGrades.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message });
             }
+        }
+
+        public async Task<IActionResult> CompleteInfo(int? id)
+        {
+            var classroom = await _classroomService.FindByIdAsync(id);
+            return View(classroom);
         }
 
         public IActionResult Error(string message)

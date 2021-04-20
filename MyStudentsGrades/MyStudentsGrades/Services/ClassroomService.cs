@@ -42,6 +42,7 @@ namespace MyStudentsGrades.Services
             classroom.Activities = await _context.Activity.Where(x => x.ClassroomId == classroom.Id).ToListAsync();
             classroom.Students = await _context.Student.Where(x => x.ClassroomId == classroom.Id).ToListAsync();
 
+            classroom.Students = classroom.Students.OrderBy(x => x.Name).ToList();
             return classroom;
         }
 
