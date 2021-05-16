@@ -13,12 +13,12 @@ namespace MyStudentsGrades.Services
     {
         private readonly MyStudentsGradesContext _context;
 
-        public ClassroomService (MyStudentsGradesContext context)
+        public ClassroomService(MyStudentsGradesContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Classroom>> FindAllAsync ()
+        public async Task<IEnumerable<Classroom>> FindAllAsync()
         {
             var classrooms = await _context.Classroom.ToListAsync();
 
@@ -30,7 +30,7 @@ namespace MyStudentsGrades.Services
             return classrooms;
         }
 
-        public async Task<Classroom> FindByIdAsync (int? id)
+        public async Task<Classroom> FindByIdAsync(int? id)
         {
             if (id == null)
                 throw new Exception("Id not provided");
@@ -47,13 +47,13 @@ namespace MyStudentsGrades.Services
             return classroom;
         }
 
-        public async Task InsertAsync (Classroom classroom)
+        public async Task InsertAsync(Classroom classroom)
         {
             _context.Add(classroom);
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveAsync (int id)
+        public async Task RemoveAsync(int id)
         {
             try
             {
@@ -61,15 +61,15 @@ namespace MyStudentsGrades.Services
                 _context.Classroom.Remove(classroom);
                 await _context.SaveChangesAsync();
             }
-            catch(DbUpdateException)
+            catch (DbUpdateException)
             {
                 throw new IntegrityException("Can't delete classroom because it has students and/or activities");
             }
         }
 
-        public async Task UpdateAsync (Classroom classroom)
+        public async Task UpdateAsync(Classroom classroom)
         {
-            if(!await _context.Classroom.AnyAsync(x => x.Id == classroom.Id))
+            if (!await _context.Classroom.AnyAsync(x => x.Id == classroom.Id))
                 throw new NotFoundException("Id not found");
 
             try
@@ -77,7 +77,7 @@ namespace MyStudentsGrades.Services
                 _context.Classroom.Update(classroom);
                 await _context.SaveChangesAsync();
             }
-            catch(DbUpdateConcurrencyException e)
+            catch (DbUpdateConcurrencyException e)
             {
                 throw new DbUpdateConcurrencyException(e.Message);
             }
@@ -89,33 +89,59 @@ namespace MyStudentsGrades.Services
             List<Activity> activities = classroom.Activities.ToList();
             List<TotalGradeFormViewModel> totalGrades = new List<TotalGradeFormViewModel>();
 
-            foreach (Student item in students)
+            //Check if have at least one student in that classroom
+            if (students.Count == 0)
             {
                 TotalGradeFormViewModel tot = new TotalGradeFormViewModel();
                 tot.Classroom = classroom;
-                tot.Student = item;
-                double total = 0;
+                tot.Media = 0;
 
-                foreach (Activity act in activities)
+                foreach(Activity item in activities)
                 {
                     GradePerActivity gradePer = new GradePerActivity();
-                    gradePer.Activity = act;
-                    Grade grade = await _context.Grade.FirstOrDefaultAsync(x => x.StudentId == item.Id
-                                                                        && x.ActivityId == act.Id);
-                    if (grade == null)
-                        gradePer.Grade = 0;
-                    else
-                        gradePer.Grade = grade.StudentGrade;
-
-                    total += gradePer.Grade;
+                    gradePer.Activity = item;
                     tot.GradePerActivities.Add(gradePer);
                 }
-
-                double media = total / activities.Count();
-
-                tot.Media = Math.Round(media, 2);
+               
                 totalGrades.Add(tot);
+
             }
+            else
+            {
+                foreach (Student item in students)
+                {
+                    TotalGradeFormViewModel tot = new TotalGradeFormViewModel();
+                    tot.Classroom = classroom;
+                    tot.Student = item;
+                    double total = 0;
+
+                    foreach (Activity act in activities)
+                    {
+                        GradePerActivity gradePer = new GradePerActivity();
+                        gradePer.Activity = act;
+                        Grade grade = await _context.Grade.FirstOrDefaultAsync(x => x.StudentId == item.Id
+                                                                            && x.ActivityId == act.Id);
+                        if (grade == null)
+                            gradePer.Grade = 0;
+                        else
+                            gradePer.Grade = grade.StudentGrade;
+
+                        total += gradePer.Grade;
+                        tot.GradePerActivities.Add(gradePer);
+                    }
+
+                    double media = total / activities.Count();
+
+                    if (activities.Count == 0)
+                        tot.Media = 0;
+                    else
+                        tot.Media = Math.Round(media, 2);
+
+                    totalGrades.Add(tot);
+                }
+            }
+
+
 
             return totalGrades;
         }

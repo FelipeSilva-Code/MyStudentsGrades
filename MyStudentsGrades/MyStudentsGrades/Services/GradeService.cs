@@ -12,14 +12,14 @@ namespace MyStudentsGrades.Services
     {
         private readonly MyStudentsGradesContext _context;
 
-        public GradeService (MyStudentsGradesContext context)
+        public GradeService(MyStudentsGradesContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Grade> FindById (int idActivity)
+        public IEnumerable<Grade> FindById(int idActivity)
         {
-            var grades =  _context.Grade
+            var grades = _context.Grade
                 .Include(x => x.Activity)
                 .Include(x => x.Student)
                 .Where(x => x.ActivityId == idActivity);
@@ -32,49 +32,64 @@ namespace MyStudentsGrades.Services
             List<GradeFormViewModel> gradeFormViewModels = new List<GradeFormViewModel>();
 
             List<Student> students = classroom.Students.ToList();
-            foreach (Student item in students)
+
+            if (students.Count == 0)
             {
                 GradeFormViewModel gradeFormViewModel = new GradeFormViewModel();
-
-                //Student Data
-                gradeFormViewModel.StudentId = item.Id;
-                gradeFormViewModel.StudentName = item.Name;
-                gradeFormViewModel.StudentNumber = item.Number;
-
-                //Activity Data
+                gradeFormViewModel.ClassroomId = classroom.Id;
+                gradeFormViewModel.ClassroomName = classroom.ClassroomName;
                 gradeFormViewModel.ActivityName = activity.Name;
                 gradeFormViewModel.ActivityQuarter = activity.Quarter.ToString();
                 gradeFormViewModel.ActivityId = activity.Id;
-
-                //Classroom Data
-                gradeFormViewModel.ClassroomName = classroom.ClassroomName;
-                gradeFormViewModel.ClassroomId = classroom.Id;
-
-                //Grade Data
-                Grade grade = await _context.Grade.FirstOrDefaultAsync(x => x.StudentId == item.Id 
-                                                                        && x.ActivityId == activity.Id);
-                if (grade == null)
-                {
-                    gradeFormViewModel.GradeId = 0;
-                    gradeFormViewModel.Observation = "";
-                    gradeFormViewModel.Grade = 0;
-                }
-                else
-                {
-                    gradeFormViewModel.GradeId = grade.Id;
-                    gradeFormViewModel.Observation = grade.Observation;
-                    gradeFormViewModel.Grade = grade.StudentGrade;
-                }
-                
+                gradeFormViewModel.StudentName = "";
                 gradeFormViewModels.Add(gradeFormViewModel);
+            }
+            else
+            {
+                foreach (Student item in students)
+                {
+                    GradeFormViewModel gradeFormViewModel = new GradeFormViewModel();
+
+                    //Student Data
+                    gradeFormViewModel.StudentId = item.Id;
+                    gradeFormViewModel.StudentName = item.Name;
+                    gradeFormViewModel.StudentNumber = item.Number;
+
+                    //Activity Data
+                    gradeFormViewModel.ActivityName = activity.Name;
+                    gradeFormViewModel.ActivityQuarter = activity.Quarter.ToString();
+                    gradeFormViewModel.ActivityId = activity.Id;
+
+                    //Classroom Data
+                    gradeFormViewModel.ClassroomName = classroom.ClassroomName;
+                    gradeFormViewModel.ClassroomId = classroom.Id;
+
+                    //Grade Data
+                    Grade grade = await _context.Grade.FirstOrDefaultAsync(x => x.StudentId == item.Id
+                                                                            && x.ActivityId == activity.Id);
+                    if (grade == null)
+                    {
+                        gradeFormViewModel.GradeId = 0;
+                        gradeFormViewModel.Observation = "";
+                        gradeFormViewModel.Grade = 0;
+                    }
+                    else
+                    {
+                        gradeFormViewModel.GradeId = grade.Id;
+                        gradeFormViewModel.Observation = grade.Observation;
+                        gradeFormViewModel.Grade = grade.StudentGrade;
+                    }
+
+                    gradeFormViewModels.Add(gradeFormViewModel);
+                }
             }
 
             return gradeFormViewModels.OrderBy(x => x.StudentName).ToList();
         }
 
-        public async Task ManageGrades (List<GradeFormViewModel> gradeForms)
+        public async Task ManageGrades(List<GradeFormViewModel> gradeForms)
         {
-            foreach(GradeFormViewModel item in gradeForms)
+            foreach (GradeFormViewModel item in gradeForms)
             {
                 Grade grade = TransformToGrade(item);
 
@@ -85,7 +100,7 @@ namespace MyStudentsGrades.Services
             }
         }
 
-        public Grade TransformToGrade (GradeFormViewModel gradeForm)
+        public Grade TransformToGrade(GradeFormViewModel gradeForm)
         {
             Grade grade = new Grade
             {
@@ -98,13 +113,13 @@ namespace MyStudentsGrades.Services
             return grade;
         }
 
-        public async Task UpdateAsync (Grade grade)
+        public async Task UpdateAsync(Grade grade)
         {
             _context.Grade.Update(grade);
             await _context.SaveChangesAsync();
         }
 
-        public async Task InsertAsync (Grade grade)
+        public async Task InsertAsync(Grade grade)
         {
             try
             {

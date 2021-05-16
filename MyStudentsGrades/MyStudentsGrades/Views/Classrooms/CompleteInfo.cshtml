@@ -18,7 +18,7 @@
     <table class="table table-hover">
         @foreach (var item in Model)
         {
-            @if (i == item.GradePerActivities.Count)
+            @if (i > item.GradePerActivities.Count)
             {
                 break;
             }
@@ -54,31 +54,36 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Student.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Student.Number)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Student.BirthDate)
-                    </td>
-                    @foreach (var x in item.GradePerActivities)
-                    {
+                @if (item.Student != null)
+                {
+                    <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => x.Grade)
+                            @Html.DisplayFor(modelItem => item.Student.Name)
                         </td>
-                    }
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Media)
-                    </td>
-                    <td>
-                        <a asp-controller="Students" asp-action="Edit" asp-route-id="@item.Student.Id">Edit</a>&nbsp;|
-                        &nbsp;<a asp-controller="Students" asp-action="Details" asp-route-id="@item.Student.Id">Details</a>&nbsp;|
-                        &nbsp;<a asp-controller="Students" asp-action="Delete" asp-route-id="@item.Student.Id">Delete</a>
-                    </td>
-                </tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.Number)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.BirthDate)
+                        </td>
+                        @foreach (var x in item.GradePerActivities)
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => x.Grade)
+                            </td>
+                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Media)
+                        </td>
+
+                        <td>
+                            <a asp-controller="Students" asp-action="Edit" asp-route-id="@item.Student.Id">Edit</a> |
+                            <a asp-controller="Students" asp-action="Details" asp-route-id="@item.Student.Id">Details</a> |
+                            <a asp-controller="Students" asp-action="Delete" asp-route-id="@item.Student.Id">Delete</a>
+                        </td>
+
+                    </tr>
+                }
             }
         </tbody>
     </table>

@@ -51,6 +51,11 @@ namespace MyStudentsGrades.Controllers
                 if (!ModelState.IsValid)
                     return View(grades);
 
+                if (grades.Count == 0)
+                {
+                    return RedirectToAction("Index", "Classrooms");
+                }
+
                 if (grades != null)
                 {
                     await _gradeService.ManageGrades(grades);
