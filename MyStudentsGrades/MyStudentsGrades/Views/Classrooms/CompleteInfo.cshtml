@@ -1,56 +1,82 @@
-﻿@model MyStudentsGrades.Models.Classroom
-
+﻿@using MyStudentsGrades.Models.ViewModels
+@model IEnumerable<TotalGradeFormViewModel>
 @{
     ViewData["Title"] = "CompleteInfo";
 }
 
-<h1> @Html.DisplayFor(model => model.NameSchool) - @Html.DisplayFor(model => model.ClassroomName)</h1>
+@{
+    int i = 0;
+}
+
+<h1> @Model.FirstOrDefault().Classroom.NameSchool - @Model.FirstOrDefault().Classroom.ClassroomName</h1>
 <p>
-    <a asp-controller="Students" asp-route-id="@Model.Id" asp-action="Create">Add New Student</a>
-    <a asp-controller="Students" asp-route-id="@Model.Id" asp-action="Create">| Add New Activity</a>
+    <a asp-controller="Students" asp-route-id="@Model.FirstOrDefault().Classroom.Id" asp-action="Create">Add New Student</a>
+    |
+    <a asp-controller="Activitys" asp-route-id="@Model.FirstOrDefault().Classroom.Id" asp-action="Create">Add New Activity</a>
 </p>
 <div class="divTable">
     <table class="table table-hover">
-        <thead>
-            <tr class="table-primary">
-                <th>
-                    Name
-                </th>
-                <th>
-                    Number
-                </th>
-                <th>
-                   BirthDate
-                </th>
-                <th>
-                    Students Info
-                </th>
-                @foreach (var item in Model.Activities)
-                {
-                <th>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </th>
-                }
-                
-            </tr>
-        </thead>
+        @foreach (var item in Model)
+        {
+            @if (i == item.GradePerActivities.Count)
+            {
+                break;
+            }
+            <thead>
+                <tr class="table-primary">
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Number
+                    </th>
+                    <th>
+                        BirthDate
+                    </th>
+                    @foreach (var x in item.GradePerActivities)
+                    {
+                        <th>
+                            <a asp-controller="Grades" asp-action="Index" asp-route-id="@x.Activity.Id">
+                                @Html.DisplayFor(modelItem => x.Activity.Name)
+                            </a>
+                        </th>
+                        i++;
+                    }
+                    <th>
+                        Media
+                    </th>
+                    <th>
+                        Students&nbsp;Info
+                    </th>
+                </tr>
+            </thead>
+        }
         <tbody>
-            @foreach (var item in Model.Students)
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        @Html.DisplayFor(modelItem => item.Student.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Number)
+                        @Html.DisplayFor(modelItem => item.Student.Number)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.BirthDate)
+                        @Html.DisplayFor(modelItem => item.Student.BirthDate)
+                    </td>
+                    @foreach (var x in item.GradePerActivities)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => x.Grade)
+                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Media)
                     </td>
                     <td>
-                        <a asp-controller="Students" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-controller="Students" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-controller="Students" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a asp-controller="Students" asp-action="Edit" asp-route-id="@item.Student.Id">Edit</a>&nbsp;|
+                        &nbsp;<a asp-controller="Students" asp-action="Details" asp-route-id="@item.Student.Id">Details</a>&nbsp;|
+                        &nbsp;<a asp-controller="Students" asp-action="Delete" asp-route-id="@item.Student.Id">Delete</a>
                     </td>
                 </tr>
             }

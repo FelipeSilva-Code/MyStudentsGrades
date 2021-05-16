@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,13 +34,28 @@ namespace MyStudentsGrades
                    options.UseMySql(Configuration.GetConnectionString("MyStudentsGradesContext"), builder =>
                    builder.MigrationsAssembly("MyStudentsGrades")));
 
+
+            services.AddMvc().AddSessionStateTempDataProvider();
+            services.AddSession();
             services.AddScoped<ClassroomService>();
             services.AddScoped<StudentService>();
+            services.AddScoped<ActivityService>();
+            services.AddScoped<GradeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //Configure the localization of the applicatioon
+            var enUs = new CultureInfo("en-US");
+            var localizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(enUs),
+                SupportedCultures = new List<CultureInfo> { enUs },
+                SupportedUICultures = new List<CultureInfo> { enUs }
+            };
+            app.UseRequestLocalization(localizationOptions);
+           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -62,6 +79,8 @@ namespace MyStudentsGrades
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseSession();
         }
     }
 }

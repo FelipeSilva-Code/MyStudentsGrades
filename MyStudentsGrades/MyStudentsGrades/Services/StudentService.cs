@@ -43,8 +43,6 @@ namespace MyStudentsGrades.Services
 
         public async Task<int> RemoveAsync (int? id)
         {
-          
-
             var student = await FindByIdAsync(id);
 
             //Necessary because need to back to the page of this classroom
@@ -54,7 +52,6 @@ namespace MyStudentsGrades.Services
             await _context.SaveChangesAsync();
 
             return classroomId;
-           
         }
 
         public async Task UpdateAsync (Student student)

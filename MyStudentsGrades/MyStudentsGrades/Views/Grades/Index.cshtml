@@ -1,0 +1,61 @@
+﻿@using MyStudentsGrades.Models.ViewModels
+@model IEnumerable<GradeFormViewModel>
+
+@{
+    ViewBag.Title = "Grades";
+}
+<h1>@Model.FirstOrDefault().ActivityName - @Model.FirstOrDefault().ActivityQuarter</h1>
+
+<a asp-controller="Activitys" asp-action="Edit" asp-route-id="@Model.First().ActivityId">Edit</a> |
+<a asp-controller="Activitys" asp-action="Details" asp-route-id="@Model.First().ActivityId">Details</a> |
+<a asp-controller="Activitys" asp-action="Delete" asp-route-id="@Model.First().ActivityId">Delete</a>
+
+<br />
+<hr />
+
+<h2>Add Grades</h2>
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
+    @using (Html.BeginForm("Index", "Grades", FormMethod.Post))
+    {
+
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <th>
+                        @Html.DisplayNameFor(model => model.StudentName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StudentNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Grade)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Observation)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="childtable">
+                @Html.EditorFor(model => Model)
+            </tbody>
+        </table>
+
+        <p>
+            <a class="btn btn-primary" asp-controller="Classrooms" asp-action="CompleteInfo" asp-route-id="@Model.FirstOrDefault().ClassroomId">
+                Cancel
+            </a>
+            Or
+            <button class="btn btn-primary" type="submit">
+                Save
+            </button>
+        </p>
+    }
+
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

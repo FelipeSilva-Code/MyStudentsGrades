@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyStudentsGrades.Services;
 using MyStudentsGrades.Models;
+using MyStudentsGrades.Models.ViewModels;
 using MyStudentsGrades.Services.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyStudentsGrades.Controllers
 {
@@ -119,8 +121,18 @@ namespace MyStudentsGrades.Controllers
 
         public async Task<IActionResult> CompleteInfo(int? id)
         {
-            var classroom = await _classroomService.FindByIdAsync(id);
-            return View(classroom);
+            try
+            {
+                var classroom = await _classroomService.FindByIdAsync(id);
+
+                var totalGrades = await _classroomService.GetTotalGradesAsync(classroom);
+
+                return View(totalGrades);
+            }
+            catch(ApplicationException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
         }
 
         public IActionResult Error(string message)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyStudentsGrades.Models;
 using MyStudentsGrades.Services.Exceptions;
+using MyStudentsGrades.Models.ViewModels;
 
 namespace MyStudentsGrades.Services
 {
@@ -80,6 +81,43 @@ namespace MyStudentsGrades.Services
             {
                 throw new DbUpdateConcurrencyException(e.Message);
             }
+        }
+
+        public async Task<List<TotalGradeFormViewModel>> GetTotalGradesAsync(Classroom classroom)
+        {
+            List<Student> students = classroom.Students.ToList();
+            List<Activity> activities = classroom.Activities.ToList();
+            List<TotalGradeFormViewModel> totalGrades = new List<TotalGradeFormViewModel>();
+
+            foreach (Student item in students)
+            {
+                TotalGradeFormViewModel tot = new TotalGradeFormViewModel();
+                tot.Classroom = classroom;
+                tot.Student = item;
+                double total = 0;
+
+                foreach (Activity act in activities)
+                {
+                    GradePerActivity gradePer = new GradePerActivity();
+                    gradePer.Activity = act;
+                    Grade grade = await _context.Grade.FirstOrDefaultAsync(x => x.StudentId == item.Id
+                                                                        && x.ActivityId == act.Id);
+                    if (grade == null)
+                        gradePer.Grade = 0;
+                    else
+                        gradePer.Grade = grade.StudentGrade;
+
+                    total += gradePer.Grade;
+                    tot.GradePerActivities.Add(gradePer);
+                }
+
+                double media = total / activities.Count();
+
+                tot.Media = Math.Round(media, 2);
+                totalGrades.Add(tot);
+            }
+
+            return totalGrades;
         }
     }
 }
