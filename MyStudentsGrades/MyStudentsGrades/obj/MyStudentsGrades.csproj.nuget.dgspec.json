@@ -1,36 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Desenvolvimento\\MyStudent'sGrades\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades.csproj": {}
+    "C:\\DevProjetos\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades.csproj": {}
   },
   "projects": {
-    "C:\\Desenvolvimento\\MyStudent'sGrades\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades.csproj": {
+    "C:\\DevProjetos\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Desenvolvimento\\MyStudent'sGrades\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades.csproj",
+        "projectUniqueName": "C:\\DevProjetos\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades.csproj",
         "projectName": "MyStudentsGrades",
-        "projectPath": "C:\\Desenvolvimento\\MyStudent'sGrades\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades.csproj",
+        "projectPath": "C:\\DevProjetos\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades.csproj",
         "packagesPath": "C:\\Users\\felip\\.nuget\\packages\\",
-        "outputPath": "C:\\Desenvolvimento\\MyStudent'sGrades\\MyStudentsGrades\\MyStudentsGrades\\obj\\",
+        "outputPath": "C:\\DevProjetos\\MyStudentsGrades\\MyStudentsGrades\\MyStudentsGrades\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\felip\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "net8.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -38,15 +35,26 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.AspNetCore.Http.Abstractions": {
               "target": "Package",
               "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
@@ -56,7 +64,7 @@
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.13, )"
+              "version": "[5.0.0, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
@@ -64,7 +72,7 @@
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
-              "version": "[3.2.2, )"
+              "version": "[5.0.0, )"
             }
           },
           "imports": [
@@ -73,7 +81,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -85,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300-preview.24203.14/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -31,8 +31,9 @@ namespace MyStudentsGrades
             services.AddControllersWithViews();
 
             services.AddDbContext<MyStudentsGradesContext>(options =>
-                   options.UseMySql(Configuration.GetConnectionString("MyStudentsGradesContext"), builder =>
-                   builder.MigrationsAssembly("MyStudentsGrades")));
+            options.UseMySql(Configuration.GetConnectionString("MyStudentsGradesContext"),
+                new MySqlServerVersion(new Version(8, 0, 21)), // Certifique-se de especificar a versão do servidor MySQL
+            builder => builder.MigrationsAssembly("MyStudentsGrades")));
 
 
             services.AddMvc().AddSessionStateTempDataProvider();
